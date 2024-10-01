@@ -54,21 +54,21 @@ def kk_de(kk_img):
     return_img = kk_img
     key_lst = pg.key.get_pressed()
     if key_lst[pg.K_UP]:
-        return_img= pg.transform.rotozoom(kk_img, 0, 0.9)
+        return_img= pg.transform.rotozoom(kk_img, 0, 1)
     elif key_lst[pg.K_DOWN]:
-        return_img=pg.transform.rotozoom(kk_img, 180, 0.9)
+        return_img=pg.transform.rotozoom(kk_img, 180, 1)
     elif key_lst[pg.K_LEFT]:
-        pg.transform.rotozoom(kk_img, 270, 0.9)
+        pg.transform.rotozoom(kk_img, 270, 1)
     elif key_lst[pg.K_RIGHT]:
-        pg.transform.rotozoom(kk_img, 90, 0.9)
+        pg.transform.rotozoom(kk_img, 90, 1)
     elif key_lst[pg.K_UP] and key_lst[pg.K_RIGHT] :
-        pg.transform.rotozoom(kk_img, 45, 0.9)
+        pg.transform.rotozoom(kk_img, 45, 1)
     elif key_lst[pg.K_DOWN] and key_lst[pg.K_RIGHT]:
-        pg.transform.rotozoom(kk_img, 135, 0.9) 
+        pg.transform.rotozoom(kk_img, 135, 1) 
     elif key_lst[pg.K_DOWN] and key_lst[pg.K_LEFT]:
-        pg.transform.rotozoom(kk_img, 225, 0.9)
+        pg.transform.rotozoom(kk_img, 225, 1)
     elif key_lst[pg.K_UP] and key_lst[pg.K_LEFT]:
-        pg.transform.rotozoom(kk_img, 315 ,0.9)                  
+        pg.transform.rotozoom(kk_img, 315 ,1)                  
     return return_img
 
 def main():
