@@ -40,6 +40,36 @@ def gameover(screen):
     pg.display.update()
     time.sleep(5)
 
+def bomb_ex():
+    accs = [a for a in range(1,11)]
+    imgs = []
+    for r in range(1,11):
+        bb_img = pg.Surface((20*r,20*r))
+        pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+        bb_img.set_colorkey((0,0,0))
+        imgs.append(bb_img)
+    return accs,imgs
+
+def kk_de(kk_img):
+    return_img = kk_img
+    key_lst = pg.key.get_pressed()
+    if key_lst[pg.K_UP]:
+        return_img= pg.transform.rotozoom(kk_img, 0, 0.9)
+    elif key_lst[pg.K_DOWN]:
+        return_img=pg.transform.rotozoom(kk_img, 180, 0.9)
+    elif key_lst[pg.K_LEFT]:
+        pg.transform.rotozoom(kk_img, 270, 0.9)
+    elif key_lst[pg.K_RIGHT]:
+        pg.transform.rotozoom(kk_img, 90, 0.9)
+    elif key_lst[pg.K_UP] and key_lst[pg.K_RIGHT] :
+        pg.transform.rotozoom(kk_img, 45, 0.9)
+    elif key_lst[pg.K_DOWN] and key_lst[pg.K_RIGHT]:
+        pg.transform.rotozoom(kk_img, 135, 0.9) 
+    elif key_lst[pg.K_DOWN] and key_lst[pg.K_LEFT]:
+        pg.transform.rotozoom(kk_img, 225, 0.9)
+    elif key_lst[pg.K_UP] and key_lst[pg.K_LEFT]:
+        pg.transform.rotozoom(kk_img, 315 ,0.9)                  
+    return return_img
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -49,6 +79,7 @@ def main():
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
     bb_img = pg.Surface((20,20)) # 空のSurface
+    bb_accs,bb_imgs = bomb_ex() #追加機能2
     bb_img.set_colorkey((0,0,0)) # 空のSurface
     pg.draw.circle(bb_img,(255,0,0),(10,10),10)
     bb_rct = bb_img.get_rect() # 爆弾Rectの抽出
@@ -64,7 +95,7 @@ def main():
         screen.blit(bg_img, [0, 0]) 
         if kk_rct.colliderect(bb_rct):
             # こうかとんと爆弾が重なっていたら
-            gameover(screen)
+            gameover(screen) #追加機能1
             print("GameOver")
             return
         key_lst = pg.key.get_pressed()
@@ -85,13 +116,19 @@ def main():
         if check_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
         screen.blit(kk_img, kk_rct)
+        new_kk_img =kk_de(kk_img)
+        kk_img = new_kk_img #追加機能3
 
-        bb_rct.move_ip(vx,vy)
+        #bb_rct.move_ip(vx,vy)
         yoko, tate = check_bound(bb_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
+        avx,avy = vx*bb_accs[min(tmr//500,9)] , vy*bb_accs[min(tmr//500,9)]
+        bb_img = bb_imgs[min(tmr//500,9)]
+        bb_rct.move_ip(avx,avy)
+        bb_rct.width, bb_rct.height = bb_img.get_rect().width, bb_img.get_rect().height
         screen.blit(bb_img,bb_rct)
         pg.display.update()
         tmr += 1
